@@ -8,7 +8,7 @@ st.set_page_config(layout="wide")
 # pip install requests
 
 # Step 4: Initialize the Google Maps client
-api_key = "AIzaSyDt-xh1BRpmNO8HujgykkWZdkPe7v9FRv8"
+api_key = "XAIzaSyDt-xh1BRpmNO8HujgykkWZdkPe7v9FRv8X"
 base_url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
 
 # Step 2 & 3: Import dependencies
@@ -17,9 +17,6 @@ base_url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
 
 
 def get_coordinates(city, state):
-    # Replace 'YOUR_API_KEY' with your actual Google Maps API key
-    # Format the city and state into a location string
-    #nah
 
     # URL for the Geocoding API request
     url = f'https://maps.googleapis.com/maps/api/geocode/json?address={city},{state}&key={api_key}'
@@ -34,8 +31,6 @@ def get_coordinates(city, state):
             # Extract the latitude and longitude coordinates
             latitude = data['results'][0]['geometry']['location']['lat']
             longitude = data['results'][0]['geometry']['location']['lng']
-
-            # Return the coordinates
             return latitude, longitude
         else:
             print('No results found.')
@@ -49,7 +44,6 @@ def get_coordinates(city, state):
 def fetch_legal_services(location, search_str, radius):
     lat,lng = get_coordinates(location.split(",")[0] , location.split(",")[1])
     st.write(lat, lng)
-    # str(get_coordinates(location.split(",")[0] , location.split(",")[1]))
 
     search_request = f'{base_url}?keyword={search_str}s&location={lat},{lng}&radius={radius}&key={api_key}'
     response = requests.get(search_request)
@@ -58,7 +52,6 @@ def fetch_legal_services(location, search_str, radius):
     if 'results' in data:
         results = data['results']
         for result in results:
-            # Process each result as needed
             services.append(result)
 
         # Check if there are more results to fetch
@@ -107,7 +100,6 @@ def get_website(place_id):
         return "Error"
 
 
-# Step 1, 2 & 6: Create UI components and display results
 st.title("Juntos Service Finder")
 location = st.text_input("Enter City, State")
 search_str = st.text_input("Search For ...")
@@ -116,20 +108,15 @@ search_button = st.button("Find", 10000)
 
 if search_button:
     if location and search_str:
-        # Step 5: Fetch data
         legal_services = fetch_legal_services(location, search_str, radius)
 
-        # Step 6: Process data
         processed_services = process_legal_services(legal_services)
 
-        # Step 7: Display results
         if processed_services:
             st.subheader(f"{search_str} in {location}:")
 
 
             def make_clickable(link):
-                # target _blank to open new window
-                # extract clickable text to display for your link
                 return f'<a target="_blank" href="{link}">{link}</a>'
 
 
